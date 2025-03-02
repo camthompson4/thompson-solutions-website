@@ -58,10 +58,8 @@
                 <form class="contact-form" 
                       name="contact" 
                       method="POST" 
-                      data-netlify="true" 
-                      action="/success" 
-                      netlify-honeypot="bot-field">
-                    <input type="hidden" name="form-name" value="contact" />
+                      data-netlify="true">
+                    <input type="hidden" name="form-name" value="contact">
                     <div class="form-group">
                         <label for="name">Full Name</label>
                         <input type="text" id="name" name="name" required>
@@ -126,43 +124,6 @@
             document.getElementById('notification').classList.remove('show');
         });
 
-        // Form Validation and Submission
-        const contactForm = document.querySelector('.contact-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                try {
-                    const button = contactForm.querySelector('button');
-                    button.disabled = true;
-                    button.textContent = 'Sending...';
-                    
-                    const formData = new FormData(contactForm);
-                    const response = await fetch('/', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/x-www-form-urlencoded;charset=UTF-8',
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: new URLSearchParams(formData).toString()
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    
-                    showNotification('Message sent successfully! We\'ll respond shortly.');
-                    contactForm.reset();
-                } catch (error) {
-                    showNotification('Error sending message. Please try again.', 'error');
-                    console.error('Form submission error:', error);
-                } finally {
-                    button.disabled = false;
-                    button.textContent = 'Send Message';
-                }
-            });
-        }
-
         // Mobile Menu Toggle
         const menuButton = document.querySelector('.menu-button');
         const navLinks = document.querySelector('.nav-links');
@@ -175,25 +136,14 @@
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (navLinks.classList.contains('active') && 
-                !e.target.closest('.nav-links') && 
-                !e.target.closest('.menu-button')) {
+            if (!e.target.closest('.nav-links') && !e.target.closest('.menu-button')) {
                 navLinks.classList.remove('active');
                 menuButton.classList.remove('active');
                 document.body.style.overflow = '';
             }
         });
 
-        // Close mobile menu when clicking a link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                menuButton.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        });
-
-        // Scroll to Top Button
+        // Scroll to Top Butto
         const scrollTop = document.querySelector('.scroll-top');
         
         window.addEventListener('scroll', () => {
@@ -210,6 +160,14 @@
                 top: 0,
                 behavior: 'smooth'
             });
+        });
+
+        // Form submission handling
+        const form = document.querySelector('.contact-form');
+        form.addEventListener('submit', () => {
+            const button = form.querySelector('button');
+            button.disabled = true;
+            button.textContent = 'Sending...';
         });
     </script>
 </body>
